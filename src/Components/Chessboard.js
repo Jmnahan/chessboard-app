@@ -1,20 +1,19 @@
-import { Chess } from "chess.js"
-import Tile from "./Tile";
+import { useContext } from "react";
+import ChessContext from "../Context";
+import Board from "./Board";
 
 export default function Chessboard() {
-  const chess = new Chess()
-  const board = chess.board()
+  const { board } = useContext(ChessContext)
 
   const mapping = board.map((items, index) => {
     return (
-      <Tile 
+      <Board 
         key={index}
         items={items}
         index={index}
       />
     )
   })
-
   return (
     <>
       <section className="chessboard">

@@ -1,34 +1,10 @@
-import Piece from "./Piece"
 
 export default function Tile(props) {
-  const { items, index } = props
+  const { children, bgColor } = props
 
-  const ItemsMapping = items.map((subItems, subIndex) => {
-    if(subItems === null) {
-      if((subIndex + index) % 2 === 0) {
-        return <div className="flex justify-center items-center bg-black"
-        key={subIndex}></div>
-      } else {
-        return <div className="flex justify-center items-center bg-white" 
-        key={subIndex}></div>
-      }
-    } else {
-      if((subIndex + index) % 2 === 0) {
-        return <div className="flex justify-center items-center hover:cursor-grab active:cursor-grabbing bg-black" 
-        key={subIndex}>
-          <Piece subItems={subItems}/>
-        </div>
-      } else {
-        return <div className="flex justify-center items-center hover:cursor-grab active:cursor-grabbing bg-white" 
-        key={subIndex}>
-          <Piece subItems={subItems}/>
-        </div>
-      }
-    }
-  })
+  const bgClass = bgColor ? "bg-black" : "bg-white"
 
-  return <>
-    {ItemsMapping}
-  </>
+  return (
+    <div className={`${bgClass} board-square flex justify-center items-center`}>{children}</div>
+  )
 }
-

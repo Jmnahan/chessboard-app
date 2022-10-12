@@ -1,9 +1,12 @@
 import Chessboard from "./Components/Chessboard";
+import { ChessProvider } from "./Context";
 
 export default function App() {
   return (
     <div className="grid place-content-center h-screen">
-    <Chessboard/>
+      <ChessProvider>
+        <Chessboard/>
+      </ChessProvider>
     </div>
   );
 }
