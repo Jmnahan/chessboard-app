@@ -1,4 +1,4 @@
-import { createContext, useRef, useState } from "react";
+import { createContext, useRef, useState, useEffect } from "react";
 import { Chess } from "chess.js"
 const ChessContext = createContext();
 const FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
@@ -12,11 +12,55 @@ export function ChessProvider({children}){
   const [ hints, setHints ] = useState(false) 
   const [ fenVal, setFenVal ] = useState("")
   const turn = chess.turn()
+  const [piecePromote, setPiecePromote] = useState()
+
+  useEffect(()=> {
+    checkGameState(chess)
+    kingCheck(board)
+  },[chess,fen])
+
+  const checkGameState = (chess) => {
+    if(chess.isCheckmate()) {
+      console.log(chess.isGameOver())
+    }
+
+    else if(chess.isDraw()) {
+      console.log(true)
+    }
+
+    if(chess.isStalemate()) {
+      console.log(true)
+    }
+      console.log(false)
+  } 
+
+  const kingCheck = (board) => {
+   let flatBoard = board.flat()
+
+   flatBoard.map(item => {
+    if(chess.isCheck()) {
+      if((item?.color === 'b' && item?.type === 'k')|| (item?.color === 'w' && item?.type === 'k')){
+        console.log(37, item)
+      }
+    }
+    
+   })
+  }
 
   const Move = (from, to) => {  
     const legalMove = chess.move({from, to}) 
     if(legalMove) {
       setBoard(chess.board())
+      setFen(chess.fen())
+    }
+  }
+
+  const toPromote = (from, to, item) => {
+    const promotionMove = chess.move({from, to, promotion: item})
+
+    if (promotionMove) {
+      setBoard(chess.board())
+      setPiecePromote(null)
     }
   }
 
@@ -95,8 +139,10 @@ export function ChessProvider({children}){
         setFenVal,
         Fen,
         setTiles,
+        toPromote,
         getBgColor,
-        getPosition}
+        getPosition,
+      }
       }>{children}
     </ChessContext.Provider>
   )
