@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body{
-  background-color: #f4f7fa;
+  background-color: #e7e7ec;
 }
 
 .board-square {
@@ -28,6 +28,35 @@ body{
     ". . . . . . . ."
     ". . . . . . . ."
     ". . . . . . . ."; 
-  width: 45em; 
-  height: 45em; 
+  width: 54em; 
+  height: 52em; 
 }
+
+.container {  display: grid;
+  grid-template-columns: 0.3fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 2.5fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 0.3fr;
+  grid-auto-columns: 1fr;
+  grid-auto-rows: 1fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "vertical-8 chessboard chessboard chessboard chessboard chessboard chessboard chessboard chessboard side"
+    "vertical-7 chessboard chessboard chessboard chessboard chessboard chessboard chessboard chessboard side"
+    "vertical-6 chessboard chessboard chessboard chessboard chessboard chessboard chessboard chessboard side"
+    "vertical-5 chessboard chessboard chessboard chessboard chessboard chessboard chessboard chessboard side"
+    "vertical-4 chessboard chessboard chessboard chessboard chessboard chessboard chessboard chessboard side"
+    "vertical-3 chessboard chessboard chessboard chessboard chessboard chessboard chessboard chessboard side"
+    "vertical-2 chessboard chessboard chessboard chessboard chessboard chessboard chessboard chessboard side"
+    "vertical-1 chessboard chessboard chessboard chessboard chessboard chessboard chessboard chessboard side"
+    ". horizontal-a horizontal-b horizontal-c horizontal-d horizontal-e horizontal-f horizontal-g horizontal-h side";
+  width: 70em;
+  height: 53em;
+}
+
+.chessboard { grid-area: chessboard; }
+
+.side { grid-area: side; }
+
+.horizontal { grid-area: horizontal; }
+
+.vertical { grid-area: vertical; }

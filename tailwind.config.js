@@ -7,8 +7,8 @@ module.exports = {
         black_tile: "#b7c0d8",
         white_tile: "#e8edf9",
         active: "#b1a7fc",
-        black: "#b7c0d8",
-        white: "#e8edf9"
+        piece: "#3b3b54",
+        coor: "#f4f7fa"
       },
       height: {
         "100px": "100px",
