@@ -60,3 +60,13 @@ body{
 .horizontal { grid-area: horizontal; }
 
 .vertical { grid-area: vertical; }
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+::-webkit-scrollbar {
+    display: none;
+}

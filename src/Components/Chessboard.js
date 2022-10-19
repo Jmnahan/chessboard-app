@@ -1,9 +1,11 @@
 import { useContext } from "react";
 import ChessContext from "../Context";
 import Board from "./Board";
+import Notation from "./Notation";
+import Timer from "./Timer"
 
 export default function Chessboard() {
-  const { board, turn, hints, setHints, Reset, Fen, setFenVal, fenVal } = useContext(ChessContext)
+  const { board, turn, hints, setHints } = useContext(ChessContext)
   const isOn = hints ? "ON" : "OFF"
   const YAxis = [1, 2, 3, 4, 5, 6, 7, 8];
   const XAxis = ["", "a", "b", "c", "d", "e", "f", "g", "h"];
@@ -33,31 +35,21 @@ export default function Chessboard() {
   })
 
   return (
-    <div className="container">
+    <div className="container ">
       {numbers}
     <section className="chessboard border-t-2 border-r-2 border-black_tile">
       {mapping}
     </section>
       {letters}
-    <div className="side text-piece">
-      <div className="text-3xl font-semibold bg-black_tile text-center">Turn: 
+    <div className="side text-piece h-full flex flex-col">
+      <div className="text-3xl font-semibold bg-black_tile text-center p-2">Turn: 
        <span>{isTurned(turn)}</span>
       </div>
-      <button className="text-3xl font-semibold bg-black_tile text-center w-full" 
-        onClick={() => setHints(prevHints => !prevHints)}>Hints: {isOn}
+      <button className={`text-3xl font-semibold bg-black_tile text-center p-2 w-full`}
+        onClick={() => setHints(prevHints => !prevHints)}>Hints: <span className="hover:text-active">{isOn}</span>
       </button>
-      <button className="text-3xl font-semibold bg-black_tile text-center w-full" 
-        onClick={() => Reset() }>Reset
-      </button>
-        <input
-          type="text"
-          value={fenVal}
-          placeholder="Enter FEN"
-          onChange={(event) => setFenVal(event.target.value)}
-        />
-        <button className="text-3xl font-semibold bg-black_tile text-center w-full" 
-          onClick={() => Fen() }>Clickity
-        </button>
+      <Timer/>
+      <Notation/>
     </div>
     </div>
   )

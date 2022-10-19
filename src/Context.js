@@ -7,10 +7,16 @@ export function ChessProvider({children}){
   const [fen, setFen] = useState(FEN)
   const {current: chess } = useRef(new Chess(fen))
   const [ board, setBoard ] = useState(chess.board()) 
-  const [ tiles, setTiles ] = useState([])
+  const [ tiles, setTiles ] = useState()
   const [ dragVal, setDragVal ] = useState(false)
   const [ hints, setHints ] = useState(false) 
   const [ fenVal, setFenVal ] = useState("")
+  const [ movesArr, setMovesArr ] = useState([])
+  const [ didCapture, setDidCapture ] = useState(false)
+  const [ player1, setPlayer1 ] = useState("")
+  const [ player2, setPlayer2 ] = useState("")
+  const [ boardReset, setBoardReset ] = useState(false)
+  const [ start, setStart ] = useState(false)
   const turn = chess.turn()
   const [piecePromote, setPiecePromote] = useState()
 
@@ -31,7 +37,7 @@ export function ChessProvider({children}){
     if(chess.isStalemate()) {
       console.log(true)
     }
-      console.log(false)
+      // console.log(false)
   } 
 
   const kingCheck = (board) => {
@@ -52,8 +58,19 @@ export function ChessProvider({children}){
     if(legalMove) {
       setBoard(chess.board())
       setFen(chess.fen())
+      let legalSan = legalMove.san
+      setMovesArr([...movesArr, legalSan])
     }
   }
+
+  useEffect(()=> {
+    if(movesArr) {
+      let lastMove = movesArr.slice(-1)
+      if(lastMove[0]?.indexOf("x") > -1 ) {
+        setDidCapture(true)
+      }
+    }
+  },[movesArr])
 
   const toPromote = (from, to, item) => {
     const promotionMove = chess.move({from, to, promotion: item})
@@ -85,24 +102,44 @@ export function ChessProvider({children}){
   const Reset = () => {
     chess.reset()
     setBoard(chess.board())
+    setMovesArr([])
+    setBoardReset(true)
+    setDidCapture(false)
+    setHints(false)
+    setPlayer1("")
+    setPlayer2("")
   }
 
   const GetDots = (children) => {
     let ids = (children[0].props.id)
+    const hidden = didCapture? "hidden" : "bg-active"
     if(dragVal && hints === true) {
       const dot = tiles.map((items) => {
         if(items.length > 2) {
           let newItem = items.slice(-2)
           if(newItem === ids) {
-            return (<span className="absolute bg-active w-8 h-8 rounded-full" key={newItem}></span>)
+            return (<span className={`absolute ${hidden} w-8 h-8 rounded-full`} key={newItem}></span>)
           }
         } else if(items === ids) {
-          return (<span className="absolute bg-active w-8 h-8 rounded-full" key={items}></span>)
-        } 
+          return (<span className={`absolute ${hidden} w-8 h-8 rounded-full`} key={items}></span>) 
+        }
       })
       return(dot)
     } 
   }
+
+  useEffect(()=> {
+    if(didCapture && !dragVal) {
+      setDidCapture(false)
+    }
+
+    const timer = setTimeout(() => {
+      if(boardReset) {
+        setBoardReset(false)
+      }
+    }, 1000);
+    return () => clearTimeout(timer)
+  },[didCapture, dragVal, boardReset, tiles])
 
   const getCoor = (subIndex, index) => {
     const x = (subIndex) % 8;
@@ -124,6 +161,8 @@ export function ChessProvider({children}){
     <ChessContext.Provider 
       value={
         {board, 
+        start, 
+        setStart,
         getCoor,
         GetMoves,
         turn,
@@ -134,11 +173,16 @@ export function ChessProvider({children}){
         GetDots,
         hints,
         dragVal,
-        tiles,
+        setPlayer1,
+        setPlayer2,
+        boardReset,
+        player1,
+        player2,
         fenVal,
         setFenVal,
+        didCapture,
         Fen,
-        setTiles,
+        movesArr,
         toPromote,
         getBgColor,
         getPosition,

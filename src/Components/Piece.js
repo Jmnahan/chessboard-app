@@ -28,10 +28,10 @@ export default function Piece(props) {
   return (
     <>
     <DragPreviewImage connect={preview} src={pieceimg}/>
-    <div className="w-full h-full flex justify-center items-center" 
+    <div className="w-full h-full flex justify-center items-center"
       style={{backgroundColor: dragging ? "#b1a7fc" : ""}}>
       <img className="hover:cursor-grab active:cursor-grabbing" src={pieceimg} alt="" ref={drag}/>
-      </div>
+    </div>
     </>
     
   )
