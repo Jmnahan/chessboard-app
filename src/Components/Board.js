@@ -1,6 +1,7 @@
 import Square from "./Square"
 import { useContext } from "react";
 import ChessContext from "../Context";
+import PromotionModal from "./PromotionModal";
 
 export default function Board(props) {
   const { items, index } = props 
@@ -17,7 +18,7 @@ export default function Board(props) {
   })
 
   return <>
-    {ItemsMapping}
+      {ItemsMapping}
   </>
 }
 
