@@ -3,7 +3,7 @@ import ChessContext from "../Context";
 import Board from "./Board";
 
 export default function Chessboard() {
-  const { board, turn, hints, setHints, Reset, Fen, setFenVal, fenVal } = useContext(ChessContext)
+  const { board, turn, hints, setHints, Reset, Fen, setFenVal, fenVal, gameState} = useContext(ChessContext)
   const isOn = hints ? "ON" : "OFF"
   const YAxis = [1, 2, 3, 4, 5, 6, 7, 8];
   const XAxis = ["", "a", "b", "c", "d", "e", "f", "g", "h"];
@@ -32,6 +32,39 @@ export default function Chessboard() {
     )
   })
 
+  const GameOverModal = (props) => {
+    const {status, winner} = gameState
+    const modal = (
+      <>
+      <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+                <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                  {/*content*/}
+                  <div className="border-0 rounded-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                    {/*header*/}
+                    <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+                      <h3 className="text-3xl font-semibold">
+                        {status}
+                      </h3>
+                    </div>
+                    {/*body*/}
+                    <div className="relative p-6 flex-auto">
+                        {winner}
+                    </div>
+                    {/*footer*/}
+                    <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="opacity-0 fixed inset-0 z-40 bg-black"></div>
+            </>
+      );
+
+      return(
+        modal
+      )
+  }
+
   return (
     <div className="container">
       {numbers}
@@ -58,6 +91,7 @@ export default function Chessboard() {
         <button className="text-3xl font-semibold bg-black_tile text-center w-full" 
           onClick={() => Fen() }>Clickity
         </button>
+        <GameOverModal/>
     </div>
     </div>
   )

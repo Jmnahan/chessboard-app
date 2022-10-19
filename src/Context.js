@@ -11,42 +11,58 @@ export function ChessProvider({children}){
   const [ dragVal, setDragVal ] = useState(false)
   const [ hints, setHints ] = useState(false) 
   const [ fenVal, setFenVal ] = useState("")
-  const turn = chess.turn()
-  const [piecePromote, setPiecePromote] = useState()
+  const [kingWarn,setKingWarn] = useState({})
+  const [gameState, setGameState] = useState(
+  { 
+    status:'test',
+    winner:'habanero',
+  })
+  const [piecePromote, setPiecePromote] = useState(false)
 
+  const turn = chess.turn()
   useEffect(()=> {
-    checkGameState(chess)
     kingCheck(board)
-  },[chess,fen])
+    checkGameState(chess)
+  },[chess, board])
 
   const checkGameState = (chess) => {
+    let endTurn = ''
+
+    if(turn ==='b') {
+      endTurn = 'White'
+    }
+    else {
+      endTurn = 'Black'
+    }
+    console.log(chess.isCheckmate())
     if(chess.isCheckmate()) {
-      console.log(chess.isGameOver())
+      setGameState({ status:'GameOver', winner:`${endTurn} wins` })
+      
     }
 
     else if(chess.isDraw()) {
+      setGameState({ status:'GameOver', winner:`Game is a Draw` })
       console.log(true)
     }
-
-    if(chess.isStalemate()) {
-      console.log(true)
-    }
-      console.log(false)
   } 
 
   const kingCheck = (board) => {
-   let flatBoard = board.flat()
+   let flatBoard = board?.flat()
 
-   flatBoard.map(item => {
-    if(chess.isCheck()) {
-      if((item?.color === 'b' && item?.type === 'k')|| (item?.color === 'w' && item?.type === 'k')){
-        console.log(37, item)
+   let king = {}
+   if (turn === 'b') {
+      if(chess.inCheck()){
+       king = flatBoard.find(item => item?.type === 'k' && item?.color === turn)
       }
+   }
+   else {
+    if(chess.inCheck()){
+      king = flatBoard.find(item => item?.type === 'k' && item?.color === turn)
     }
-    
-   })
   }
-
+  setKingWarn(king)
+  }
+  
   const Move = (from, to) => {  
     const legalMove = chess.move({from, to}) 
     if(legalMove) {
@@ -60,8 +76,9 @@ export function ChessProvider({children}){
 
     if (promotionMove) {
       setBoard(chess.board())
-      setPiecePromote(null)
+      setPiecePromote(false)
     }
+    
   }
 
   const Fen = () => {
@@ -124,6 +141,7 @@ export function ChessProvider({children}){
     <ChessContext.Provider 
       value={
         {board, 
+        kingWarn,
         getCoor,
         GetMoves,
         turn,
@@ -142,6 +160,10 @@ export function ChessProvider({children}){
         toPromote,
         getBgColor,
         getPosition,
+        setKingWarn,
+        piecePromote,
+        setPiecePromote,
+        gameState
       }
       }>{children}
     </ChessContext.Provider>
