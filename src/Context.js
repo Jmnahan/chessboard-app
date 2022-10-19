@@ -18,14 +18,15 @@ export function ChessProvider({children}){
   const [ boardReset, setBoardReset ] = useState(false)
   const [ start, setStart ] = useState(false)
   const turn = chess.turn()
+  const gameOver = chess.isGameOver()
   const [kingWarn,setKingWarn] = useState({})
   const [gameState, setGameState] = useState(
   { 
-    status:'test',
-    winner:'habanero',
+    status:'',
+    winner:'',
   })
   const [piecePromote, setPiecePromote] = useState(false)
-
+  
   useEffect(()=> {
     kingCheck(board)
     checkGameState(chess)
@@ -42,12 +43,12 @@ export function ChessProvider({children}){
     }
     console.log(chess.isCheckmate())
     if(chess.isCheckmate()) {
-      setGameState({ status:'GameOver', winner:`${endTurn} wins` })
+      setGameState({ status:'Game Over', winner:`${endTurn} wins` })
       
     }
 
     else if(chess.isDraw()) {
-      setGameState({ status:'GameOver', winner:`Game is a Draw` })
+      setGameState({ status:'Game Over', winner:`Game is a Draw` })
       console.log(true)
     }
   } 
@@ -207,7 +208,8 @@ export function ChessProvider({children}){
         setKingWarn,
         piecePromote,
         setPiecePromote,
-        gameState
+        gameState,
+        gameOver
       }
       }>{children}
     </ChessContext.Provider>

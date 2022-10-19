@@ -24,11 +24,11 @@ const PromotionModal = (props) => {
                       </h3>
                     </div>
                     {/*body*/}
-                    <div className="relative p-6 flex-auto">
-                        <button value='q' onClick={(e)=>{eventHandle(e.target.value)}}> Queen </button>
-                        <button value='n' onClick={(e)=>{eventHandle(e.target.value)}}> Knight </button>
-                        <button value='b' onClick={(e)=>{eventHandle(e.target.value)}}> Bishop </button>
-                        <button value='r' onClick={(e)=>{eventHandle(e.target.value)}}> Rook </button>
+                    <div className="relative p-6 flex-auto ">
+                        <button className = 'bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-3 border border-gray-400 rounded shadow m-1' value='q' onClick={(e)=>{eventHandle(e.target.value)}}> Queen </button>
+                        <button className = 'bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-3 border border-gray-400 rounded shadow m-1' value='n' onClick={(e)=>{eventHandle(e.target.value)}}> Knight </button>
+                        <button className = 'bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-3 border border-gray-400 rounded shadow m-1' value='b' onClick={(e)=>{eventHandle(e.target.value)}}> Bishop </button>
+                        <button className = 'bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-3 border border-gray-400 rounded shadow m-1' value='r' onClick={(e)=>{eventHandle(e.target.value)}}> Rook </button>
                     </div>
                     {/*footer*/}
                     <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
