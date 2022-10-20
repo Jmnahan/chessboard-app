@@ -17,8 +17,10 @@ export function ChessProvider({children}){
   const [ player2, setPlayer2 ] = useState("")
   const [ boardReset, setBoardReset ] = useState(false)
   const [ start, setStart ] = useState(false)
+  const [ P1seconds, setP1Seconds ] = useState(0);
+  const [ P2seconds, setP2Seconds ] = useState(0);
   const turn = chess.turn()
-  const gameOver = chess.isGameOver()
+  const [gameOver, setGameOver ]= useState(chess.isGameOver())
   const [kingWarn,setKingWarn] = useState({})
   const [gameState, setGameState] = useState(
   { 
@@ -30,7 +32,7 @@ export function ChessProvider({children}){
   useEffect(()=> {
     kingCheck(board)
     checkGameState(chess)
-  },[chess, board])
+  },[chess, board, start, P1seconds, P2seconds, turn])
 
   const checkGameState = (chess) => {
     let endTurn = ''
@@ -41,15 +43,15 @@ export function ChessProvider({children}){
     else {
       endTurn = 'Black'
     }
-    console.log(chess.isCheckmate())
     if(chess.isCheckmate()) {
       setGameState({ status:'Game Over', winner:`${endTurn} wins` })
-      
     }
 
     else if(chess.isDraw()) {
       setGameState({ status:'Game Over', winner:`Game is a Draw` })
-      console.log(true)
+    }
+    else if(start && (P1seconds === 0 || P2seconds === 0)) {
+      setGameState({ status:'Game Over', winner:`${endTurn} wins` })
     }
   } 
 
@@ -123,9 +125,11 @@ export function ChessProvider({children}){
     setMovesArr([])
     setBoardReset(true)
     setDidCapture(false)
+    setGameOver(false)
     setHints(false)
     setPlayer1("")
     setPlayer2("")
+
   }
 
   const GetDots = (children) => {
@@ -181,6 +185,11 @@ export function ChessProvider({children}){
         {board, 
         start, 
         setStart,
+        setGameOver,
+        P1seconds,
+        setP1Seconds,
+        P2seconds,
+        setP2Seconds,
         kingWarn,
         getCoor,
         GetMoves,

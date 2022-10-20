@@ -25,12 +25,13 @@ export default function Piece(props) {
   },[isDragging])
 
   const pieceimg = require(`../assets/Piece=${type}, Side=${color}.png`)
+  
   return (
     <>
     <DragPreviewImage connect={preview} src={pieceimg}/>
-    <div className="w-full h-full flex justify-center items-center"
-      style={{backgroundColor: dragging ? "#b1a7fc" : ""}}>
-      <img className="hover:cursor-grab active:cursor-grabbing" src={pieceimg} alt="" ref={drag}/>
+    <div className="w-full h-full flex justify-center items-center" ref={drag}
+      style={{backgroundColor: dragging ? "#b1a7fc" : "transparent"}}>
+      <img className="hover:cursor-grab active:cursor-grabbing" src={pieceimg} alt="" />
     </div>
     </>
     
